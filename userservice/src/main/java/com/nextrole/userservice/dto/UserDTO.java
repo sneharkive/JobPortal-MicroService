@@ -2,8 +2,9 @@ package com.nextrole.userservice.dto;
 
 import com.nextrole.userservice.entity.User;
 
-import jakarta.persistence.Column;
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,13 +15,15 @@ import lombok.NoArgsConstructor;
 public class UserDTO {
   private Long id;
 
-  @Column(nullable = false)
+  @NotBlank(message = "{user.name.absent}")
   private String name;
 
- @Column(unique = true, nullable = false)
+  @NotBlank(message = "{user.email.absent}")
+  @Email(message = "{user.email.invalid}")
   private String email;
 
-  @Column(unique = true, nullable = false)
+  @NotBlank(message = "{user.password.absent}")
+  @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,15}$", message = "{user.password.invalid}")
   private String password;
 
   private AccountType accountType;
@@ -31,4 +34,3 @@ public class UserDTO {
     return new User(this.id, this.name, this.email, this.password, this.accountType, this.profileId);
   }
 }
-
