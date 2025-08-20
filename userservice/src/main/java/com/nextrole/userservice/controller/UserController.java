@@ -14,8 +14,6 @@ import com.nextrole.userservice.dto.UserDTO;
 import com.nextrole.userservice.exception.JobPortalException;
 import com.nextrole.userservice.service.UserService;
 
-import jakarta.validation.Valid;
-
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +29,7 @@ public class UserController {
   private UserService userService;
 
   @PostMapping("/register")
-  public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO userDTO) throws JobPortalException  {
+  public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO userDTO) throws JobPortalException  {
     userDTO = userService.registerUser(userDTO);
     return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
   }

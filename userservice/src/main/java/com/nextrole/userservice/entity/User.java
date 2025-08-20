@@ -5,6 +5,8 @@ import com.nextrole.userservice.dto.UserDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,10 +36,11 @@ public class User {
  @Column(nullable = false)
   private String password;
 
+  @Enumerated(EnumType.STRING)
   private AccountType accountType;
 
   
-  private Long profileId;
+  private String profileId;
 
   public UserDTO toDTO(){
     return new UserDTO(this.id, this.name, this.email, this.password, this.accountType, this.profileId);

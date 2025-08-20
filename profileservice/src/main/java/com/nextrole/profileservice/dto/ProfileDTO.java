@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProfileDTO {
   private String id;
+  private String userId;
   private String name;
   private String email;
   private String jobTitle;
@@ -32,7 +33,7 @@ public class ProfileDTO {
   private List<Certification> certifications;
 
   public Profile toEntity() {
-    return new Profile(this.id, this.name, this.email, this.jobTitle, this.company, this.location, this.about,
+    return new Profile(this.id, this.userId, this.name, this.email, this.jobTitle, this.company, this.location, this.about,
         this.profilePicture != null ? Base64.getDecoder().decode(this.profilePicture) : null, 
         this.coverPicture != null ? Base64.getDecoder().decode(this.coverPicture) : null, 
         this.resume != null ? Base64.getDecoder().decode(this.resume) : null, 

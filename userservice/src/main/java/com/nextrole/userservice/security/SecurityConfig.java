@@ -12,15 +12,31 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // @Bean
+    // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    //     http
+    //         .csrf(csrf -> csrf.disable()) // disable CSRF for simplicity (enable later with tokens)
+    //         .authorizeHttpRequests(auth -> auth
+    //             .requestMatchers("/users/**")
+    //                 .permitAll()   // ✅ allow these without authentication
+    //             .anyRequest()
+    //                 .authenticated() // all others require login
+    //         );
+
+    //     return http.build();
+    // }
+
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // disable CSRF for simplicity (enable later with tokens)
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.disable()) // or configure CORS if frontend runs on another port
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/users/register", "users/getUser/*")
-                    .permitAll()   // ✅ allow these without authentication
-                .anyRequest()
-                    .authenticated() // all others require login
+                .requestMatchers("/users/**").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // ✅ allow preflight
+                .anyRequest().authenticated()
             );
 
         return http.build();

@@ -2,6 +2,8 @@ package com.nextrole.userservice.dto;
 
 import com.nextrole.userservice.entity.User;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -26,8 +28,10 @@ public class UserDTO {
   @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,15}$", message = "{user.password.invalid}")
   private String password;
 
+  @Enumerated(EnumType.STRING)
   private AccountType accountType;
-  private Long profileId;
+  
+  private String profileId;
 
 
   public User toEntity(){

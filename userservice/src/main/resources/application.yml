@@ -1,14 +1,28 @@
-server:
-  port: 8081
-
 spring:
-  application:
-    name: userservice
-  
-  config:
-    import: optional:user-service.secret.yml
+  datasource:
+    url: jdbc:mysql://localhost:3306/job_portal
+    username: root
+    password: HWorld@123SR
 
   jpa:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false   
+
+server:
+  port: 8081
+
+
+application:
+  name: userservice
+
+config:
+  import: optional:user-service.secret.yml
