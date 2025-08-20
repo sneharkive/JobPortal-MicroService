@@ -20,7 +20,9 @@ public class ProfileDTO {
   private String company;
   private String location;
   private String about;
-  // private String picture;
+  private String profilePicture;
+  private String coverPicture;
+  private String resume;
   private Long totalExp;
 
   private List<String> savedJobs;
@@ -31,7 +33,9 @@ public class ProfileDTO {
 
   public Profile toEntity() {
     return new Profile(this.id, this.name, this.email, this.jobTitle, this.company, this.location, this.about,
-        // this.picture != null ? Base64.getDecoder().decode(this.picture) : null, 
+        this.profilePicture != null ? Base64.getDecoder().decode(this.profilePicture) : null, 
+        this.coverPicture != null ? Base64.getDecoder().decode(this.coverPicture) : null, 
+        this.resume != null ? Base64.getDecoder().decode(this.resume) : null, 
         this.totalExp, 
         this.savedJobs, this.skills,
         this.experiences, this.certifications);
