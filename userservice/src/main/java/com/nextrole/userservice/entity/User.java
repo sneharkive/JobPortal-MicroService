@@ -1,6 +1,5 @@
 package com.nextrole.userservice.entity;
 
-
 import com.nextrole.userservice.dto.AccountType;
 import com.nextrole.userservice.dto.UserDTO;
 
