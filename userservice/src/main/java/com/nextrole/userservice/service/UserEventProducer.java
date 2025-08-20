@@ -3,7 +3,9 @@ package com.nextrole.userservice.service;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import com.nextrole.userservice.dto.UserCreatedEvent;
+import com.nextrole.common_dto.dto.UserCreatedEvent;
+
+
 
 @Service
 public class UserEventProducer {

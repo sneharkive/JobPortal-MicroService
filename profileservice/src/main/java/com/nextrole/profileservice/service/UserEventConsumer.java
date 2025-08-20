@@ -3,9 +3,9 @@ package com.nextrole.profileservice.service;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import com.nextrole.profileservice.dto.AccountType;
-import com.nextrole.profileservice.dto.UserCreatedEvent;
-import com.nextrole.profileservice.exception.JobPortalException;
+import com.nextrole.common_dto.dto.AccountType;
+import com.nextrole.common_dto.dto.UserCreatedEvent;
+import com.nextrole.common_dto.exception.JobPortalException;
 
 @Service
 public class UserEventConsumer {

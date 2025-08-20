@@ -1,6 +1,5 @@
 package com.nextrole.userservice.entity;
 
-import com.nextrole.userservice.dto.AccountType;
 import com.nextrole.userservice.dto.UserDTO;
 
 import jakarta.persistence.Column;
@@ -14,6 +13,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.nextrole.common_dto.dto.AccountType;
 
 @Data
 @Entity

@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.nextrole.userservice.dto.AccountType;
-import com.nextrole.userservice.dto.UserCreatedEvent;
+import com.nextrole.common_dto.dto.AccountType;
+import com.nextrole.common_dto.dto.UserCreatedEvent;
+import com.nextrole.common_dto.exception.JobPortalException;
 import com.nextrole.userservice.dto.UserDTO;
 import com.nextrole.userservice.entity.User;
-import com.nextrole.userservice.exception.JobPortalException;
 import com.nextrole.userservice.repository.UserRepo;
 
 @Service

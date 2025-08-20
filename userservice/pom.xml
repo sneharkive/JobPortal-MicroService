@@ -77,6 +77,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- shared dto -->
+	<dependency>
+    <groupId>com.nextrole</groupId>
+    <artifactId>common-dto</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>

@@ -1,5 +1,6 @@
 package com.nextrole.userservice.dto;
 
+import com.nextrole.common_dto.dto.AccountType;
 import com.nextrole.userservice.entity.User;
 
 import jakarta.persistence.EnumType;

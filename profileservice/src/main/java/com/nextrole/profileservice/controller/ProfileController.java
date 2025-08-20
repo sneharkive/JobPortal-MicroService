@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nextrole.profileservice.dto.CreateProfileRequest;
+import com.nextrole.common_dto.dto.CreateProfileRequest;
+import com.nextrole.common_dto.exception.JobPortalException;
 import com.nextrole.profileservice.dto.ProfileDTO;
-import com.nextrole.profileservice.exception.JobPortalException;
 import com.nextrole.profileservice.service.ProfileService;
 
 @RestController

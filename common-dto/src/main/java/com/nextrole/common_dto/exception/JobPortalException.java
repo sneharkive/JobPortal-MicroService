@@ -1,4 +1,4 @@
-package com.nextrole.userservice.exception;
+package com.nextrole.common_dto.exception;
 
 public class JobPortalException  extends Exception{
 

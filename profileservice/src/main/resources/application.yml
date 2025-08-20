@@ -17,7 +17,9 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "com.nextrole.*"   # ✅ safer than "*"
-        spring.json.value.default.type: com.nextrole.profileservice.dto.UserCreatedEvent 
+        spring.json.value.default.type: com.nextrole.common_dto.dto.UserCreatedEvent
+
+
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

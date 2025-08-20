@@ -3,6 +3,8 @@ package com.nextrole.profileservice.dto;
 import java.util.Base64;
 import java.util.List;
 
+import com.nextrole.common_dto.dto.Certification;
+import com.nextrole.common_dto.dto.Experience;
 import com.nextrole.profileservice.model.Profile;
 
 import lombok.AllArgsConstructor;

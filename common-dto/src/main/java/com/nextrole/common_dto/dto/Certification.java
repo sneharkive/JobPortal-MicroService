@@ -1,4 +1,4 @@
-package com.nextrole.profileservice.dto;
+package com.nextrole.common_dto.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

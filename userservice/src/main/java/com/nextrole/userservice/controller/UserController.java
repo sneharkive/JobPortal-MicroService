@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nextrole.common_dto.exception.JobPortalException;
 import com.nextrole.userservice.dto.UserDTO;
-import com.nextrole.userservice.exception.JobPortalException;
 import com.nextrole.userservice.service.UserService;
 
 

@@ -1,4 +1,4 @@
-package com.nextrole.profileservice.dto;
+package com.nextrole.common_dto.dto;
 
 public enum AccountType {
   APPLICANT, EMPLOYER

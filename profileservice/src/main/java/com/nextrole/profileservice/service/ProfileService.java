@@ -6,11 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nextrole.common_dto.exception.JobPortalException;
 import com.nextrole.profileservice.dto.ProfileDTO;
-import com.nextrole.profileservice.exception.JobPortalException;
 import com.nextrole.profileservice.model.Profile;
 import com.nextrole.profileservice.repository.ProfileRepository;
-// import com.nextrole.profileservice.utility.Utilities;
 
 @Service
 public class ProfileService {
@@ -61,18 +60,5 @@ public class ProfileService {
   public List<ProfileDTO> getAllProfile() throws JobPortalException {
     return profileRepository.findAll().stream().map((x) -> x.toDTO()).toList();
   }
-
-  // public ProfileDTO createEmptyProfile(String userId, String) {
-  // Profile profile = new Profile();
-  // profile.setUserId(userId);
-  // profile.setEmail(email);
-  // profile.setSkills(new ArrayList<>());
-  // profile.setExperiences(new ArrayList<>());
-  // profile.setCertifications(new ArrayList<>());
-  // // other fields null by default
-
-  // Profile saved = profileRepository.save(profile);
-  // return new ProfileDTO(saved);
-  // }
 
 }

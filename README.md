@@ -6,22 +6,17 @@
 ## 4. JobPost Service   - MongoDB
 ## 5. JobApply Service  - MongoDB
 ## 6. Notification Service  
-## 7. Message Service
+## 7. Message Service 
 ## 8. AI Service (For Resume Checker)
 
-## 9. Eureka Server
-## 10. API Gateway
-## 11. Config Gateway
 
 
 
-## Planing to use Eureka and Feign
-- use Eureka as service registry.
+## Kafka
+- I use Kafka to connect userservice and profileservice that whenever user register APPLICANT accountType Profile will be created
 
-- use Feign for inter-service communication (instead of manual REST calls).
+- To run Kafka 
+```bash
+docker compose up -d
 
-- Both are commonly used together in Spring Cloud microservice architecture.
-
-
-- RabbitMQ for Notifications and Message
-
+```

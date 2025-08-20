@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.nextrole.profileservice.dto.Certification;
-import com.nextrole.profileservice.dto.Experience;
+import com.nextrole.common_dto.dto.Certification;
+import com.nextrole.common_dto.dto.Experience;
 import com.nextrole.profileservice.dto.ProfileDTO;
 
 import lombok.AllArgsConstructor;
