@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nextrole.common_dto.dto.AccountType;
+import com.nextrole.common_dto.dto.LoginDTO;
 import com.nextrole.common_dto.dto.UserCreatedEvent;
 import com.nextrole.common_dto.exception.JobPortalException;
 import com.nextrole.userservice.dto.UserDTO;
@@ -51,6 +52,13 @@ public class UserService {
 
   public UserDTO getUserById(Long id) throws JobPortalException {
     return userRepo.findById(id).orElseThrow(() -> new JobPortalException("User Not Found!!")).toDTO();
+  }
+
+
+  public UserDTO loginUser(LoginDTO loginDTO) throws JobPortalException{
+    User user = userRepo.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+    if(!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) throw new JobPortalException(("INVALID_CREDENTIALS"));
+    return user.toDTO();
   }
 
 }
