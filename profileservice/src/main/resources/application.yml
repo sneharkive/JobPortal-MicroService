@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: profileservice
+    name: profile-service
 
   config:
     import: optional:profile-service.secret.yml
@@ -23,3 +23,9 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

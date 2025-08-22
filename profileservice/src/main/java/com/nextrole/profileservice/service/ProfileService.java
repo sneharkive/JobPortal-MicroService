@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nextrole.common_dto.dto.ProfileCreatedEvent;
 import com.nextrole.common_dto.exception.JobPortalException;
 import com.nextrole.profileservice.dto.ProfileDTO;
 import com.nextrole.profileservice.model.Profile;
@@ -17,9 +18,12 @@ public class ProfileService {
   @Autowired
   private ProfileRepository profileRepository;
 
+  @Autowired
+  private ProfileEventProducer profileEventProducer;
+
   public String createProfile(String userId, String email, String name) {
     // ✅ If profile already exists, just return its ID
-    return profileRepository.findByUserId(userId)
+    String profileId = profileRepository.findByUserId(userId)
         .map(Profile::getId)
         .orElseGet(() -> {
           Profile profile = new Profile();
@@ -32,19 +36,18 @@ public class ProfileService {
           profileRepository.save(profile);
           return profile.getId();
         });
+
+    // ✅ Send event back to UserService
+    profileEventProducer.sendProfileCreatedEvent(
+        new ProfileCreatedEvent(userId, profileId)
+    );
+
+    return profileId;
   }
 
   public ProfileDTO getProfile(String id) throws JobPortalException {
     return profileRepository.findById(id).orElseThrow(() -> new JobPortalException("PROFILE_NOT_FOUND")).toDTO();
   }
-
-  // public ProfileDTO updateProfile(ProfileDTO profileDTO) throws
-  // JobPortalException {
-  // profileRepository.findById(profileDTO.getId()).orElseThrow(() -> new
-  // JobPortalException("PROFILE_NOT_FOUND"));
-  // profileRepository.save(profileDTO.toEntity());
-  // return profileDTO;
-  // }
 
   public ProfileDTO updateProfile(ProfileDTO profileDTO) throws JobPortalException {
     Profile existingProfile = profileRepository.findById(profileDTO.getId())
@@ -60,5 +63,15 @@ public class ProfileService {
   public List<ProfileDTO> getAllProfile() throws JobPortalException {
     return profileRepository.findAll().stream().map((x) -> x.toDTO()).toList();
   }
+
+  public String deleteProfile(String profileId) throws JobPortalException {
+    return profileRepository.findById(profileId).map(user -> {
+        profileRepository.delete(user);
+        return "Profile deleted successfully with id: " + profileId;
+    }).orElseThrow(() -> new JobPortalException("Profile not found with id: " + profileId));
+  }
+
+
+  
 
 }

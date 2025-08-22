@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,6 +61,12 @@ public ResponseEntity<String> createProfile(@RequestBody CreateProfileRequest re
   @PutMapping("/update")
   public ResponseEntity<ProfileDTO> updateProfile(@RequestBody ProfileDTO profileDTO) throws JobPortalException {
     return new ResponseEntity<>(profileService.updateProfile(profileDTO), HttpStatus.OK);
+  }
+
+
+  @DeleteMapping("/delete/{profileId}")
+  public ResponseEntity<String> deleteProfile(@PathVariable String profileId) throws JobPortalException {
+    return new ResponseEntity<>(profileService.deleteProfile(profileId), HttpStatus.OK);
   }
 
 }

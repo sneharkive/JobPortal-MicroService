@@ -38,3 +38,4 @@ Job-Portal
 frontend-job-portal
 *.secret.yml
 
+authservice

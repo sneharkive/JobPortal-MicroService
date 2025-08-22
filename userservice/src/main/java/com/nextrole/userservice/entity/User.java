@@ -39,7 +39,7 @@ public class User {
   @Enumerated(EnumType.STRING)
   private AccountType accountType;
 
-  
+  @Column(name = "profile_id")
   private String profileId;
 
   public UserDTO toDTO(){

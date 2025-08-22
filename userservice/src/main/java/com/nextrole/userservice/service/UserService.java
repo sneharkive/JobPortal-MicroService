@@ -10,11 +10,15 @@ import com.nextrole.common_dto.dto.AccountType;
 import com.nextrole.common_dto.dto.LoginDTO;
 import com.nextrole.common_dto.dto.UserCreatedEvent;
 import com.nextrole.common_dto.exception.JobPortalException;
+import com.nextrole.userservice.client.ProfileClient;
 import com.nextrole.userservice.dto.UserDTO;
 import com.nextrole.userservice.entity.User;
 import com.nextrole.userservice.repository.UserRepo;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class UserService {
 
   @Autowired
@@ -26,6 +30,8 @@ public class UserService {
   @Autowired
   private UserEventProducer userEventProducer;
 
+  @Autowired
+  private ProfileClient profileClient;
 
   public UserDTO registerUser(UserDTO userDTO) throws JobPortalException {
     Optional<User> opt = userRepo.findByEmail(userDTO.getEmail());
@@ -35,7 +41,7 @@ public class UserService {
     userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
     User user = userDTO.toEntity();
     user = userRepo.save(user);
-    
+
     if (userDTO.getAccountType() == AccountType.APPLICANT) {
       UserCreatedEvent event = new UserCreatedEvent();
       event.setUserId(user.getId().toString());
@@ -45,7 +51,6 @@ public class UserService {
 
       userEventProducer.sendUserCreatedEvent(event);
     }
-    
 
     return user.toDTO();
   }
@@ -54,11 +59,34 @@ public class UserService {
     return userRepo.findById(id).orElseThrow(() -> new JobPortalException("User Not Found!!")).toDTO();
   }
 
-
-  public UserDTO loginUser(LoginDTO loginDTO) throws JobPortalException{
+  public UserDTO loginUser(LoginDTO loginDTO) throws JobPortalException {
     User user = userRepo.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
-    if(!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) throw new JobPortalException(("INVALID_CREDENTIALS"));
+    if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword()))
+      throw new JobPortalException(("INVALID_CREDENTIALS"));
     return user.toDTO();
+  }
+
+  public String deleteUser(Long id) throws JobPortalException {
+    User user = userRepo.findById(id)
+        .orElseThrow(() -> new JobPortalException("User not found with id: " + id));
+
+    // Delete user from DB
+    String profileId = user.getProfileId();
+    
+    // Call profile-service to delete profile (via Feign)
+    if (profileId != null) {
+        try {
+            profileClient.deleteProfile(profileId);
+            log.info("Deleted profile {} for user {}", profileId, id);
+        } catch (Exception e) {
+            log.error("Failed to delete profile {} for user {}. Rolling back user deletion.", profileId, id, e);
+            throw new JobPortalException("Could not delete profile for user " + id);
+        }
+    }
+    
+    userRepo.delete(user);
+
+    return "User (and profile if existed) deleted successfully with id: " + id;
   }
 
 }
