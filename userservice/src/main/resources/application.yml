@@ -1,8 +1,9 @@
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/job_portal
-    username: root
-    password: HWorld@123SR
+  application:
+    name: user-service
+
+  config:
+    import: optional:user-service.secret.yml
 
   jpa:
     hibernate:
@@ -20,9 +21,7 @@ spring:
 server:
   port: 8081
 
-
-application:
-  name: userservice
-
-config:
-  import: optional:user-service.secret.yml
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
