@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.nextrole.common_dto.dto.AccountType;
 import com.nextrole.common_dto.dto.LoginDTO;
+import com.nextrole.common_dto.dto.ResponseDTO;
 import com.nextrole.common_dto.dto.UserCreatedEvent;
 import com.nextrole.common_dto.exception.JobPortalException;
 import com.nextrole.userservice.client.ProfileClient;
@@ -59,12 +60,10 @@ public class UserService {
     return userRepo.findById(id).orElseThrow(() -> new JobPortalException("User Not Found!!")).toDTO();
   }
 
-  public UserDTO loginUser(LoginDTO loginDTO) throws JobPortalException {
-    User user = userRepo.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
-    if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword()))
-      throw new JobPortalException(("INVALID_CREDENTIALS"));
-    return user.toDTO();
+  public UserDTO getUserByEmail(String email) throws JobPortalException {
+    return userRepo.findByEmail(email).orElseThrow(() -> new JobPortalException("User Not Found!!")).toDTO();
   }
+  
 
   public String deleteUser(Long id) throws JobPortalException {
     User user = userRepo.findById(id)
@@ -87,6 +86,21 @@ public class UserService {
     userRepo.delete(user);
 
     return "User (and profile if existed) deleted successfully with id: " + id;
+  }
+
+
+  public ResponseDTO changePassword(LoginDTO loginDTO) throws JobPortalException {
+    User user = userRepo.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+    user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
+    userRepo.save(user);
+
+    // NotificationDTO noti = new NotificationDTO();
+    // noti.setUserId(user.getId());
+    // noti.setMessage("Password Reset Successful");
+    // noti.setAction("Password Reset");
+    // notificationService.sendNotification(noti);
+
+    return new ResponseDTO("Password changed successfully.");
   }
 
 }

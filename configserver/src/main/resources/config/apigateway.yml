@@ -3,27 +3,29 @@ spring:
     discovery:
       enabled: true
     gateway:
-      routes:
-        - id: userservice
-          uri: lb://USERSERVICE
-          predicates:
-            - Path=/users/**
-          # filters:
-          #   - StripPrefix=1
+      server:
+        webflux:
+          routes:
+            - id: userservice
+              uri: lb://USERSERVICE
+              predicates:
+                - Path=/users/**
+              # filters:
+              #   - StripPrefix=1
 
-        - id: profileservice
-          uri: lb://PROFILESERVICE
-          predicates:
-            - Path=/profiles/**
-          # filters:
-          #   - StripPrefix=1
+            - id: profileservice
+              uri: lb://PROFILESERVICE
+              predicates:
+                - Path=/profiles/**
+              # filters:
+              #   - StripPrefix=1
 
-        - id: authservice
-          uri: lb://AUTHSERVICE
-          predicates:
-            - Path=/auth/**
-          # filters:
-          #   - StripPrefix=1
+            - id: authservice
+              uri: lb://AUTHSERVICE
+              predicates:
+                - Path=/auth/**
+              # filters:
+              #   - StripPrefix=1
 
 server:
   port: 8080
@@ -33,8 +35,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 
-
 # logging:
-  # level:
-  #   reactor.netty.http.client: DEBUG
-  #   org.springframework.web.reactive: DEBUG
+#   level:
+#     reactor.netty.http.client: DEBUG
+#     org.springframework.web.reactive: DEBUG
