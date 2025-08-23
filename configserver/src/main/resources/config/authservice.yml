@@ -1,7 +1,7 @@
 spring:
 
   config:
-    import: optional:auth-service.secret.yml
+    import: optional:authservice.secret.yml
 
   jpa:
     hibernate:

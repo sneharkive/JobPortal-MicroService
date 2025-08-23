@@ -47,9 +47,10 @@ public CorsConfigurationSource corsConfigurationSource() {
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
-        .cors(cors -> {})  // enable cors
+        // .cors(cors -> {})  // enable cors
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/users/**").permitAll()
+            // .requestMatchers("/eureka/**").permitAll()
             .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
             .anyRequest().authenticated()
         );

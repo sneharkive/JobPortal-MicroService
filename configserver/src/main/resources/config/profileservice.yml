@@ -3,7 +3,7 @@ server:
 
 spring:
   config:
-    import: optional:profile-service.secret.yml
+    import: optional:profileservice.secret.yml
 
   kafka:
     bootstrap-servers: localhost:9092
