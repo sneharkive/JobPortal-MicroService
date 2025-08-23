@@ -67,7 +67,7 @@ public class AuthService {
     if (!otpEntity.getOtpCode().equals(otp))
       throw new JobPortalException("OTP_INCORRECT");
 
-    // otpRepository.delete(otpEntity);
+    otpRepository.delete(otpEntity);
     return;
   }
 
