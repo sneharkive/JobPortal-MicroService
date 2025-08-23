@@ -31,5 +31,5 @@ public class UserDTO {
   @Enumerated(EnumType.STRING)
   private AccountType accountType;
   
-  private Long profileId;
+  private String profileId;
 }
