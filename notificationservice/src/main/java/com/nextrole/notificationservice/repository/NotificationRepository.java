@@ -13,4 +13,6 @@ import com.nextrole.notificationservice.model.Notification;
 @Repository
 public interface NotificationRepository extends  JpaRepository<Notification, Long> {
   public List<Notification> findByUserIdAndStatus(Long userId, NotificationStatus status);
+
+  public List<Notification> findByUserId(Long userId);
 }

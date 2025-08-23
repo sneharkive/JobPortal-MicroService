@@ -37,6 +37,18 @@ public class NotificationService {
   @Autowired
   private NotificationRepository notificationRepo;
 
+  private void saveNotification(Long userId, String email, String subject, String message) {
+    Notification noti = new Notification();
+    noti.setUserId(userId);
+    noti.setEmail(email);
+    noti.setSubject(subject);
+    noti.setMessage(message);
+    noti.setStatus(NotificationStatus.UNREAD);
+    noti.setTimestamp(LocalDateTime.now());
+    notificationRepo.save(noti);
+}
+
+
   public void sendNotification(NotificationDTO notificationDTO) throws JobPortalException {
     notificationDTO.setStatus(NotificationStatus.UNREAD);
     notificationDTO.setTimestamp(LocalDateTime.now());
@@ -45,6 +57,10 @@ public class NotificationService {
 
   public List<Notification> getUnreadNotification(Long userId) throws JobPortalException {
     return notificationRepo.findByUserIdAndStatus(userId, NotificationStatus.UNREAD);
+  }
+
+  public List<Notification> getAllNotifications(Long userId) throws JobPortalException {
+    return notificationRepo.findByUserId(userId);
   }
 
   public void readNotification(Long id) throws JobPortalException {
@@ -76,13 +92,15 @@ public class NotificationService {
 
     message.setText(body, true);
     mailSender.send(mm);
+
+    saveNotification(Long.parseLong(event.getUserId()), event.getEmail(), "Welcome To NextRole", "Welcome " + event.getName() + "!");
   }
 
   public void sendAccDelMail(UserDeletedEvent event) throws MessagingException {
     MimeMessage mm = mailSender.createMimeMessage();
     MimeMessageHelper message = new MimeMessageHelper(mm, true);
     message.setTo(event.getEmail());
-    message.setSubject("Delete To NextRole Account");
+    message.setSubject("Delete NextRole Account");
 
     String body = AccountDeletedData.getAccountDeletedMessage(
         event.getName(),
@@ -91,6 +109,9 @@ public class NotificationService {
 
     message.setText(body, true);
     mailSender.send(mm);
+
+    saveNotification(Long.parseLong(event.getUserId()), event.getEmail(), "Delete NextRole Account", "Delete " + event.getName() + "!");
+
   }
 
 public void sendChangePassMail(UserChangePassEvent event) throws MessagingException {
@@ -104,6 +125,9 @@ public void sendChangePassMail(UserChangePassEvent event) throws MessagingExcept
         event.getUserId());
     message.setText(body, true); 
     mailSender.send(mm);
+
+    saveNotification(Long.parseLong(event.getUserId()), event.getEmail(), "Password Change ", "Password " + event.getName() + "!");
+
 }
 
   public void sendLogInMail(UserLogInEvent event) throws MessagingException  {
@@ -121,6 +145,9 @@ public void sendChangePassMail(UserChangePassEvent event) throws MessagingExcept
     );
     message.setText(body, true); 
     mailSender.send(mm);
+
+    saveNotification(Long.parseLong(event.getUserId()), event.getEmail(), "Login to NextRole Account", "Login " + event.getName() + "!");
+
   }
 
   public void sendOtpMail(AuthOtpEvent event) throws MessagingException  {
@@ -136,6 +163,8 @@ public void sendChangePassMail(UserChangePassEvent event) throws MessagingExcept
     );
     message.setText(body, true); 
     mailSender.send(mm);
+
+    saveNotification(null, event.getEmail(), "Your OTP for NextRole", "OTP: " + event.getOtpCode());
   }
 
 }

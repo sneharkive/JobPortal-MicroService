@@ -33,6 +33,11 @@ public class NotificationController {
     return new ResponseEntity<>(notiService.getUnreadNotification(userId), HttpStatus.OK);
   }
 
+  @GetMapping("/all/{userId}")
+  public ResponseEntity<List<Notification>> getAllNotifications(@PathVariable Long userId) throws JobPortalException{
+    return new ResponseEntity<>(notiService.getAllNotifications(userId), HttpStatus.OK);
+  }
+
 
   @PutMapping("/read/{id}")
   public ResponseEntity<ResponseDTO> readNotifications(@PathVariable Long id) throws JobPortalException{
