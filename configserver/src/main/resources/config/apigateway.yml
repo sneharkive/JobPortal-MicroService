@@ -33,7 +33,7 @@ spring:
             - id: notificationservice
               uri: lb://NOTIFICATIONSERVICE
               predicates:
-                - Path=/noti/**
+                - Path=/notification/**
 
       globalcors:
         corsConfigurations:
