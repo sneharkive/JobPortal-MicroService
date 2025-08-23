@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.nextrole.authservice.dto.UserDTO;
 
-@FeignClient(name = "user-service", path = "/users") 
+@FeignClient(name = "userservice", path = "/users") 
 public interface UserClient {
 
     @GetMapping("/getUser/{id}")
