@@ -10,12 +10,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import com.nextrole.common_dto.kafka.AuthOtpEvent;
-import com.nextrole.common_dto.kafka.UserChangePassEvent;
 import com.nextrole.common_dto.kafka.UserCreatedEvent;
-import com.nextrole.common_dto.kafka.UserDeletedEvent;
-import com.nextrole.common_dto.kafka.UserLogInEvent;
-
 import java.util.HashMap;
 import java.util.Map;
 
