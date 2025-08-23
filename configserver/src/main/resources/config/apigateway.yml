@@ -30,6 +30,12 @@ spring:
                 - Path=/jobs/**
 
 
+            - id: notificationservice
+              uri: lb://NOTIFICATIONSERVICE
+              predicates:
+                - Path=/noti/**
+
+
 server:
   port: 8080
 
