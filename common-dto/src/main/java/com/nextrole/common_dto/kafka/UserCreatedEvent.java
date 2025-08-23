@@ -1,4 +1,8 @@
-package com.nextrole.common_dto.dto;
+package com.nextrole.common_dto.kafka;
+
+import java.time.LocalDateTime;
+
+import com.nextrole.common_dto.dto.AccountType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +16,7 @@ public class UserCreatedEvent {
     private String email;
     private String name;
     private AccountType accountType; // APPLICANT / RECRUITER
+    private LocalDateTime timestamp;
 
     // getters and setters
 }

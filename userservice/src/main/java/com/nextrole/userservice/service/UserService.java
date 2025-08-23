@@ -1,20 +1,27 @@
 package com.nextrole.userservice.service;
 
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nextrole.common_dto.dto.AccountType;
 import com.nextrole.common_dto.dto.LoginDTO;
 import com.nextrole.common_dto.dto.ResponseDTO;
-import com.nextrole.common_dto.dto.UserCreatedEvent;
 import com.nextrole.common_dto.exception.JobPortalException;
+import com.nextrole.common_dto.kafka.UserChangePassEvent;
+import com.nextrole.common_dto.kafka.UserCreatedEvent;
+import com.nextrole.common_dto.kafka.UserDeletedEvent;
+import com.nextrole.common_dto.kafka.UserLogInEvent;
 import com.nextrole.userservice.client.ProfileClient;
 import com.nextrole.userservice.dto.UserDTO;
 import com.nextrole.userservice.entity.User;
 import com.nextrole.userservice.repository.UserRepo;
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,6 +56,7 @@ public class UserService {
       event.setEmail(user.getEmail());
       event.setName(user.getName());
       event.setAccountType(user.getAccountType());
+      event.setTimestamp( LocalDateTime.now());
 
       userEventProducer.sendUserCreatedEvent(event);
     }
@@ -69,7 +77,6 @@ public class UserService {
     User user = userRepo.findById(id)
         .orElseThrow(() -> new JobPortalException("User not found with id: " + id));
 
-    // Delete user from DB
     String profileId = user.getProfileId();
     
     // Call profile-service to delete profile (via Feign)
@@ -84,9 +91,13 @@ public class UserService {
     }
     
     userRepo.delete(user);
-
+      userEventProducer.sendUserDeletedEvent(
+            new UserDeletedEvent(user.getId().toString(), user.getName(), user.getEmail(), LocalDateTime.now())
+        );
     return "User (and profile if existed) deleted successfully with id: " + id;
   }
+
+
 
 
   public ResponseDTO changePassword(LoginDTO loginDTO) throws JobPortalException {
@@ -94,13 +105,39 @@ public class UserService {
     user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
     userRepo.save(user);
 
-    // NotificationDTO noti = new NotificationDTO();
-    // noti.setUserId(user.getId());
-    // noti.setMessage("Password Reset Successful");
-    // noti.setAction("Password Reset");
-    // notificationService.sendNotification(noti);
+
+      userEventProducer.sendUserChangePassEvent(
+            new UserChangePassEvent(user.getId().toString(), user.getName(), user.getEmail(),  LocalDateTime.now())
+        );
 
     return new ResponseDTO("Password changed successfully.");
   }
+
+
+  public UserDTO loginUser(LoginDTO loginDTO) throws JobPortalException{
+    UserDTO user = getUserByEmail(loginDTO.getEmail());
+    if(!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) throw new JobPortalException(("INVALID_CREDENTIALS"));
+
+          userEventProducer.sendUserLogInEvent(
+            new UserLogInEvent(user.getId().toString(), user.getName(), user.getEmail(),  LocalDateTime.now())
+        );
+
+    return user;
+  }
+
+
+
+   public static String generateOtp() {
+    StringBuilder otp = new StringBuilder();
+    SecureRandom random = new SecureRandom();
+    // Generate a 6-digit OTP 
+    for (int i = 0; i < 6; i++) 
+      otp.append(random.nextInt(10));
+    
+    return otp.toString();
+  }
+
+
+  
 
 }

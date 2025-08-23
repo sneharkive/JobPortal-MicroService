@@ -20,6 +20,8 @@ public class OTP {
   private String email;
 
   private String otpCode;
+  
+  private Long userId;
 
   private LocalDateTime creationTime;
 }

@@ -12,9 +12,9 @@
 
 12 services whose name are shown below have been devised within the scope of this project.
 
+- API Gateway
 - Config Server
 - Eureka Server
-- API Gateway
 - Auth Service
 - User Service
 - Profile Service
@@ -22,7 +22,7 @@
 - Notification Service
 - AI Service
 - Message Service
-- File Storage
+- Common File Storage
 
 
 ### Used Dependencies
@@ -38,7 +38,7 @@
             * FeignClient
         * Spring Data
             * Spring Data JPA
-            * PostgreSQL
+            * MySQL
         * Spring Cloud
             * Spring Cloud Gateway Server
             * Spring Cloud Config Server
@@ -47,16 +47,16 @@
         * Eureka Server
         * Eureka Client
 * Database
-    * PostgreSQL
+    * MySQL
     * MongoDB
 * Kafka
 * RabbitMQ
 <!-- * Redis -->
 * Docker 
 * Validation
-<!-- * File storage -->
+* File storage
 * ModelMapper
-<!-- * Openapi UI -->
+<!-- * Swagger UI  -->
 * Lombok
 * Slf4j
 

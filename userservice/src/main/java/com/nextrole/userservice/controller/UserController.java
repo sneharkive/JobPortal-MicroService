@@ -38,32 +38,29 @@ public class UserController {
     return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
   }
 
-
-  @GetMapping("/getUser/{id}")
-  public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) throws JobPortalException {
-    return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
-  }
-  @GetMapping("/email")
-  public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email) throws JobPortalException {
-    return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
+  @PostMapping("/login")
+  public ResponseEntity<UserDTO> loginUser(@RequestBody @Valid LoginDTO loginDTO) throws JobPortalException {
+    return new ResponseEntity<>(userService.loginUser(loginDTO), HttpStatus.OK);
   }
 
+  @PostMapping("/changePass")
+  public ResponseEntity<ResponseDTO> changePassword(@RequestBody @Valid LoginDTO loginDTO) throws JobPortalException {
+    return new ResponseEntity<>(userService.changePassword(loginDTO), HttpStatus.OK);
+  }
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<String> deleteUser(@PathVariable Long id) throws JobPortalException {
     return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);
   }
 
-
-  @PostMapping("/changePass")
-  public ResponseEntity<ResponseDTO> changePassword(@RequestBody @Valid LoginDTO loginDTO) throws JobPortalException  {
-    return new ResponseEntity<>(userService.changePassword(loginDTO), HttpStatus.OK);
+  @GetMapping("/getUser/{id}")
+  public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) throws JobPortalException {
+    return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
   }
 
-  // @PostMapping("/validate")
-  // public ResponseEntity<UserDTO> validateUser(@RequestBody LoginDTO loginDTO) throws JobPortalException {
-  //   UserDTO userDTO = userService.loginUser(loginDTO); 
-  //   return ResponseEntity.ok(userDTO);
-  // }
+  @GetMapping("/email")
+  public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email) throws JobPortalException {
+    return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
+  }
 
 }

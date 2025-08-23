@@ -4,8 +4,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.nextrole.common_dto.dto.AccountType;
-import com.nextrole.common_dto.dto.UserCreatedEvent;
 import com.nextrole.common_dto.exception.JobPortalException;
+import com.nextrole.common_dto.kafka.UserCreatedEvent;
 
 @Service
 public class UserEventConsumer {
@@ -16,7 +16,7 @@ public class UserEventConsumer {
         this.profileService = profileService;
     }
 
-    @KafkaListener(topics = "user-events", groupId = "job-portal-group")
+    @KafkaListener(topics = "user-created-events", groupId = "job-portal-group", containerFactory = "userCreatedKafkaListenerContainerFactory")
     public void consume(UserCreatedEvent event) throws JobPortalException {
         System.out.println("📥 Received Kafka Event: " + event.getEmail());
 

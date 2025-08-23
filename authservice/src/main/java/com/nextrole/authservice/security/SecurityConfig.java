@@ -44,7 +44,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         }))
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(requests -> requests
-            .requestMatchers("/auth/login", "/users/register", "/users/verifyOtp/**", "/user/sendOtp/**").permitAll()
+            .requestMatchers("/auth/**", "/users/register", "/users/verifyOtp/**", "/user/sendOtp/**").permitAll()
             .anyRequest().authenticated())
         .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
