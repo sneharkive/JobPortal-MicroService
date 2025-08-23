@@ -13,6 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.cors.CorsConfiguration;
 
+import com.nextrole.authservice.jwt.JwtAuthenticationEntryPoint;
+import com.nextrole.authservice.jwt.JwtAuthenticationFilter;
+
 // import com.nextrole.authservice.jwt.JwtAuthenticationEntryPoint;
 // import com.nextrole.authservice.jwt.JwtAuthenticationFilter;
 
@@ -20,51 +23,50 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableWebSecurity
 public class SecurityConfig {
 
-//   @Autowired
-//   private JwtAuthenticationEntryPoint point;
+  @Autowired
+  private JwtAuthenticationEntryPoint point;
 
-//   @Autowired
-//   private JwtAuthenticationFilter filter;
+  @Autowired
+  private JwtAuthenticationFilter filter;
 
   
-//   @Bean
-// public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  @Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-//     http
-//         // .cors(cors -> cors.configurationSource(request -> {
-//         //     CorsConfiguration config = new CorsConfiguration();
-//         //     config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-//         //     config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//         //     config.setAllowedHeaders(Arrays.asList("*"));
-//         //     config.setAllowCredentials(true);
-//         //     return config;
-//         // }))
-//         .csrf(csrf -> csrf.disable())
-//         .authorizeHttpRequests(requests -> requests
-//             .requestMatchers("/auth/**").permitAll()
-//             .anyRequest().authenticated())
-//         .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
-//         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    http
+        .cors(cors -> cors.configurationSource(request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            config.setAllowedHeaders(Arrays.asList("*"));
+            config.setAllowCredentials(true);
+            return config;
+        }))
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(requests -> requests
+            .requestMatchers("/auth/login", "/users/register", "/users/verifyOtp/**", "/user/sendOtp/**").permitAll()
+            .anyRequest().authenticated())
+        .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-//     http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
-//     return http.build();
-// }
+    return http.build();
+}
 
+    // @Bean
+    // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    //     http
+    //         .csrf(csrf -> csrf.disable())
+    //         .cors(cors -> cors.disable()) // or configure CORS if frontend runs on another port
+    //         .authorizeHttpRequests(auth -> auth
+    //             .requestMatchers("/auth/**").permitAll()
+    //             .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // ✅ allow preflight
+    //             .anyRequest().authenticated()
+    //         );
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.disable()) // or configure CORS if frontend runs on another port
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // ✅ allow preflight
-                .anyRequest().authenticated()
-            );
-
-        return http.build();
-    }
+    //     return http.build();
+    // }
 
 
 }

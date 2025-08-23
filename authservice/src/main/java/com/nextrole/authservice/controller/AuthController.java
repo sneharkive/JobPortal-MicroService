@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nextrole.authservice.dto.UserDTO;
+
 import com.nextrole.authservice.service.AuthService;
 import com.nextrole.common_dto.dto.LoginDTO;
 import com.nextrole.common_dto.dto.ResponseDTO;
@@ -30,6 +31,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin
 @RequestMapping("/auth")
 public class AuthController {
+
+  // @Autowired
+  // private UserDetailsService userDetailsService;
+
+  // @Autowired
+  // private AuthenticationManager authenticationManager;
+
+  // @Autowired
+  // private JwtHelper jwtHelper;
+
+
 
   @Autowired
   private AuthService authService;
@@ -61,13 +73,13 @@ public class AuthController {
   }
 
 
-// @PostMapping("/login")
-  // public ResponseEntity<?> createAuthToken(@RequestBody AuthenticationRequest req) {
-  //   authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
-  //   final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEmail());
-  //   final String jwt = jwtHelper.generateToken(userDetails);
-  //   return ResponseEntity.ok(new AuthenticationResponse(jwt));
-  // }
+// @PostMapping("/jwt/token")
+//   public ResponseEntity<?> createAuthToken(@RequestBody AuthenticationRequest req) {
+//     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
+//     final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEmail());
+//     final String jwt = jwtHelper.generateToken(userDetails);
+//     return ResponseEntity.ok(new AuthenticationResponse(jwt));
+//   }
 
   
   
