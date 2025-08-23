@@ -18,10 +18,9 @@
 - Auth Service
 - User Service
 - Profile Service
-- Job-Post Service
-- Job-Apply Service
-- AI Service
+- Job Service
 - Notification Service
+- AI Service
 - Message Service
 - File Storage
 
