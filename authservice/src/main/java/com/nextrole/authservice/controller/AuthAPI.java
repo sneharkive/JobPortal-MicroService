@@ -3,7 +3,10 @@ package com.nextrole.authservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,14 +22,10 @@ import jakarta.validation.constraints.Pattern;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 
 @RestController
 @CrossOrigin
@@ -36,23 +35,23 @@ public class AuthAPI {
   @Autowired
   private AuthService authService;
 
-  // @Autowired
-  // private UserDetailsService userDetailsService;
+  @Autowired
+  private UserDetailsService userDetailsService;
 
-  // @Autowired
-  // private AuthenticationManager authenticationManager;
+  @Autowired
+  private AuthenticationManager authenticationManager;
 
-  // @Autowired
-  // private JwtHelper jwtHelper;
+  @Autowired
+  private JwtHelper jwtHelper;
 
 
-  // @PostMapping("/login")
-  // public ResponseEntity<?> createAuthToken(@RequestBody AuthenticationRequest req) {
-  //   authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
-  //   final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEmail());
-  //   final String jwt = jwtHelper.generateToken(userDetails);
-  //   return ResponseEntity.ok(new AuthenticationResponse(jwt));
-  // }
+  @PostMapping("/login")
+  public ResponseEntity<?> createAuthToken(@RequestBody AuthenticationRequest req) {
+    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
+    final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEmail());
+    final String jwt = jwtHelper.generateToken(userDetails);
+    return ResponseEntity.ok(new AuthenticationResponse(jwt));
+  }
 
   @PostMapping("/sendOtp/{email}")
   public ResponseEntity<ResponseDTO> sendOtp(@PathVariable @Email(message = "{user.email.invalid}") String email)

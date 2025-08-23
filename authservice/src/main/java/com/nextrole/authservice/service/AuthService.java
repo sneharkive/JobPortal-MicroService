@@ -14,7 +14,7 @@ import com.nextrole.authservice.model.OTP;
 import com.nextrole.authservice.repository.OTPRepository;
 import com.nextrole.common_dto.exception.JobPortalException;
 import com.nextrole.common_dto.kafka.AuthOtpEvent;
-import com.nextrole.common_dto.kafka.UserChangePassEvent;
+
 
 @Service
 public class AuthService {
