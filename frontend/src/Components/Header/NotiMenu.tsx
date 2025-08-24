@@ -2,11 +2,11 @@ import { Indicator, Menu, Notification, rem } from "@mantine/core";
 import { IconBell, IconCheck } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-// import {
-//   deleteNotifications,
-//   getNotifications,
-//   readNotifications,
-// } from "../../Service/NotiService";
+import {
+  deleteNotifications,
+  getNotifications,
+  readNotifications,
+} from "../../Service/NotiService";
 import { useNavigate } from "react-router-dom";
 
 const NotiMenu = () => {
@@ -15,30 +15,30 @@ const NotiMenu = () => {
   const [notifications, setNotifications] = useState<any>([]);
   const [opened, setOpened] = useState(false);
 
-  // useEffect(() => {
-  //   getNotifications(user.id)
-  //     .then((res) => setNotifications(res))
-  //     .catch((err) => console.log(err));
-  // }, [user]);
+  useEffect(() => {
+    getNotifications(user.id)
+      .then((res) => setNotifications(res))
+      .catch((err) => console.log(err));
+  }, [user]);
 
-  // const unread = (index: number) => {
-  //   let notis = [...notifications];
+  const unread = (index: number) => {
+    let notis = [...notifications];
 
-  //   notis = notis.filter((noti: any, i: number) => i != index);
-  //   setNotifications(notis);
-  //   readNotifications(notifications[index].id)
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err));
-  // };
+    notis = notis.filter((noti: any, i: number) => i != index);
+    setNotifications(notis);
+    readNotifications(notifications[index].id)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
 
   const deleteNoti = (index: number) => {
     const notiToDelete = notifications[index];
     const updatedNotis = notifications.filter((_: any, i: number) => i !== index);
     setNotifications(updatedNotis);
 
-    //   deleteNotifications(notiToDelete.id)
-    //     .then((res) => console.log("Deleted:", res))
-    //     .catch((err) => console.log("Error deleting:", err));
+      deleteNotifications(notiToDelete.id)
+        .then((res) => console.log("Deleted:", res))
+        .catch((err) => console.log("Error deleting:", err));
   };
 
 
