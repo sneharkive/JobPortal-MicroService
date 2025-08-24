@@ -45,8 +45,8 @@ public class ProfileService {
     return profileId;
   }
 
-  public ProfileDTO getProfile(String id) throws JobPortalException {
-    return profileRepository.findById(id).orElseThrow(() -> new JobPortalException("PROFILE_NOT_FOUND")).toDTO();
+  public ProfileDTO getProfile(String userId) throws JobPortalException {
+    return profileRepository.findByUserId(userId).orElseThrow(() -> new JobPortalException("PROFILE_NOT_FOUND")).toDTO();
   }
 
   public ProfileDTO updateProfile(ProfileDTO profileDTO) throws JobPortalException {
