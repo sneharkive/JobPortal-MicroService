@@ -1,25 +1,25 @@
 import axiosInstance from '../Interceptor/AxiosInterceptor';
 
 const postJob = async (job:any) => {
-  return axiosInstance.post(`/jobs/post`, job)
+  return axiosInstance.post(`/jobs/postJob`, job)
   .then (res => res.data)
   .catch(error => {throw error});
 }
 
 const getAllJobs = async () => {
-  return axiosInstance.get(`/jobs/getAll`)
+  return axiosInstance.get(`/jobs/getAllJobs`)
   .then (res => res.data)
   .catch(error => {throw error});
 } 
 
 const getJobById = async (id:any) => {
-  return axiosInstance.get(`/jobs/get/${id}`)
+  return axiosInstance.get(`/jobs/getJob/${id}`)
   .then (res => res.data)
   .catch(error => {throw error});
 }
 
 const applyJob = async (id:any, applicant:any) => {
-  return axiosInstance.post(`/jobs/apply/${id}`, applicant)
+  return axiosInstance.post(`/jobs/applyJob/${id}`, applicant)
   .then (res => res.data)
   .catch(error => {throw error});
 }
