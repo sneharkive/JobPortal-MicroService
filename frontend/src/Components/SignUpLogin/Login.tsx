@@ -12,20 +12,20 @@ import { useState } from "react";
 import { loginValidation } from "../../Service/FormValidation";
 import { useDisclosure } from "@mantine/hooks";
 import ResetPassword from "./ResetPassword";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   ErrorNotification,
   SuccessNotification,
 } from "../../Service/NotificationService";
-// import { setUser } from "../../Slices/UserSlice";
-// import { setJwt } from "../../Slices/JwtSlice";
+import { setUser } from "../../Slices/UserSlice";
+import { setJwt } from "../../Slices/JwtSlice";
 import { loginUser } from "../../Service/AuthService";
 
-// import {jwtDecode} from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 
 const Login = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const form = {
@@ -66,12 +66,12 @@ const Login = () => {
             "Login Successful",
             "Redirecting to Home Page..."
           );
-          // dispatch(setJwt(res.jwt));
-          // const decoded = jwtDecode(res.jwt);
-          // dispatch(setUser({...decoded, email:decoded.sub}))
+          dispatch(setJwt(res.jwt));
+          const decoded = jwtDecode(res.jwt);
+          dispatch(setUser({...decoded, email:decoded.sub}))
           setTimeout(() => {
             setLoading(false);
-            // dispatch(setUser(res));
+            dispatch(setUser(res));
             navigate("/");
           }, 2000);
         })

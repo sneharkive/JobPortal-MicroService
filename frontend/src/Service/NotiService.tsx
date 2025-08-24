@@ -1,22 +1,22 @@
-import axiosInstance from '../Interceptor/AxiosInterceptor';
+// import axiosInstance from '../Interceptor/AxiosInterceptor';
 
-const getNotifications = async (id:any) => {
-  return axiosInstance.get(`/notification/get/${id}`)
-  .then (res => res.data)
-  .catch(error => {throw error});
-}
+// const getNotifications = async (id:any) => {
+//   return axiosInstance.get(`/notification/get/${id}`)
+//   .then (res => res.data)
+//   .catch(error => {throw error});
+// }
 
-const readNotifications = async (id:any) => {
-  return axiosInstance.put(`/notification/read/${id}`)
-  .then (res => res.data)
-  .catch(error => {throw error});
-}
+// const readNotifications = async (id:any) => {
+//   return axiosInstance.put(`/notification/read/${id}`)
+//   .then (res => res.data)
+//   .catch(error => {throw error});
+// }
 
-const deleteNotifications = async (id:any) => {
-  return axiosInstance.delete(`/notification/delete/${id}`)
-  .then (res => res.data)
-  .catch(error => {throw error});
-}
+// const deleteNotifications = async (id:any) => {
+//   return axiosInstance.delete(`/notification/delete/${id}`)
+//   .then (res => res.data)
+//   .catch(error => {throw error});
+// }
 
-export {getNotifications,readNotifications,deleteNotifications}
+// export {getNotifications,readNotifications,deleteNotifications}
 

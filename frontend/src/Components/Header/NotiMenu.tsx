@@ -1,7 +1,7 @@
 import { Indicator, Menu, Notification, rem } from "@mantine/core";
 import { IconBell, IconCheck } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 // import {
 //   deleteNotifications,
 //   getNotifications,
@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const NotiMenu = () => {
   const navigate = useNavigate();
-  // const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: any) => state.user);
   const [notifications, setNotifications] = useState<any>([]);
   const [opened, setOpened] = useState(false);
 
@@ -32,13 +32,13 @@ const NotiMenu = () => {
   // };
 
   const deleteNoti = (index: number) => {
-  //   const notiToDelete = notifications[index];
-  //   const updatedNotis = notifications.filter((i:number) => i !== index);
-  //   setNotifications(updatedNotis);
+    const notiToDelete = notifications[index];
+    const updatedNotis = notifications.filter((_: any, i: number) => i !== index);
+    setNotifications(updatedNotis);
 
-  //   deleteNotifications(notiToDelete.id)
-  //     .then((res) => console.log("Deleted:", res))
-  //     .catch((err) => console.log("Error deleting:", err));
+    //   deleteNotifications(notiToDelete.id)
+    //     .then((res) => console.log("Deleted:", res))
+    //     .catch((err) => console.log("Error deleting:", err));
   };
 
 

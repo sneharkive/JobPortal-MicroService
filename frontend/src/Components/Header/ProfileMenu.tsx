@@ -8,22 +8,21 @@ import {
   IconLogout,
 } from "@tabler/icons-react";
 import { useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-// import { removeUser } from "../../Slices/UserSlice";
+import { removeUser } from "../../Slices/UserSlice";
 
 const ProfileMenu = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user);
+  const profile = useSelector((state: any) => state.profile);
   const [checked, setChecked] = useState(false);
   const [opened, setOpened] = useState(false);
 
-  // const dispatch = useDispatch();
-  // const user = useSelector((state: any) => state.user);
-  // const profile = useSelector((state: any) => state.profile);
-
   const handleLogout = () => {
-  //   dispatch(removeUser());
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("user");
+    dispatch(removeUser());
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     
   };
 
@@ -31,19 +30,15 @@ const ProfileMenu = () => {
     <Menu shadow="md" width={200} opened={opened} onChange={setOpened}>
       <Menu.Target>
         <div className="flex items-center gap-2 cursor-pointer">
-          <div>
-            {/* {user.name} */}
-            Sneha
-          </div>
+          <div>{user.name}</div>
 
           <Avatar
-            // src={
-              // profile.picture
-              //   ? `data:image/jpeg;base64, ${profile.picture}`
-              //   : "/avatar.png"
-            // }
-            // alt={user.name}
-            src="/avatar.png" alt="Sneha"
+            src={
+              profile.picture
+                ? `data:image/jpeg;base64, ${profile.picture}`
+                : "/avatar.png"
+            }
+            alt={user.name}
           />
         </div>
       </Menu.Target>
