@@ -34,8 +34,8 @@ const ProfileMenu = () => {
 
           <Avatar
             src={
-              profile.picture
-                ? `data:image/jpeg;base64, ${profile.picture}`
+              profile.profilePicture
+                ? `data:image/jpeg;base64, ${profile.profilePicture}`
                 : "/avatar.png"
             }
             alt={user.name}

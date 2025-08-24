@@ -10,7 +10,7 @@ import HomePage from "./HomePage";
 // import JobHistoryPage from "./JobHistoryPage";
 // import PostedJobPage from "./PostedJobPage";
 // import PostJobPage from "./PostJobPage";
-// import ProfilePage from "./ProfilePage";
+import ProfilePage from "./ProfilePage";
 import SignUpPage from "./SignUpPage";
 // import TalentProfilePage from "./TalentProfilePage";
 // import ProtectedRoute from "../Service/ProtectedRoute";
@@ -37,7 +37,7 @@ const AppRoutes = () => {
           {/* <Route path="/job-history" element={ <ProtectedRoute allowedRoles={['APPLICANT']}><JobHistoryPage /></ProtectedRoute> } /> */}
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<SignUpPage />} />
-          {/* <Route path="/profile" element={<ProfilePage />} />  */}
+          <Route path="/profile" element={<ProfilePage />} /> 
           <Route path="/" element={<HomePage />} />
         </Routes>
         <Footer />
