@@ -10,7 +10,7 @@
   <li>User can send any request to relevant service through api gateway with its bearer token</li>
 </ul>
 
-12 services whose name are shown below have been devised within the scope of this project.
+11 services whose name are shown below have been devised within the scope of this project.
 
 - API Gateway
 - Config Server
