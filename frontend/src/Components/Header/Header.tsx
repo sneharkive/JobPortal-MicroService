@@ -29,7 +29,7 @@ const Header = () => {
       dispatch(setUser({ ...decoded, email: decoded.sub }));
     }
     console.log(user);
-    getProfile(user?.id)
+    getProfile(user?.id.toString())
       .then((data: any) => {
         dispatch(setProfile(data));
         // console.log(data);

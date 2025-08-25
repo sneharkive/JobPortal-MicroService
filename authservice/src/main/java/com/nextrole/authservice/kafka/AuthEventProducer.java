@@ -1,4 +1,4 @@
-package com.nextrole.authservice.service;
+package com.nextrole.authservice.kafka;
 
 import org.springframework.stereotype.Service;
 

@@ -11,6 +11,9 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import com.nextrole.common_dto.kafka.AuthOtpEvent;
+import com.nextrole.common_dto.kafka.JobApplicationStatusChangedEvent;
+import com.nextrole.common_dto.kafka.JobAppliedEvent;
+import com.nextrole.common_dto.kafka.JobPostedEvent;
 import com.nextrole.common_dto.kafka.UserChangePassEvent;
 import com.nextrole.common_dto.kafka.UserCreatedEvent;
 import com.nextrole.common_dto.kafka.UserDeletedEvent;
@@ -66,5 +69,21 @@ public class KafkaConsumerConfig {
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, AuthOtpEvent> authOTPKafkaListenerContainerFactory() {
         return factory(AuthOtpEvent.class);
+    }
+
+    
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, JobPostedEvent> jobPostedKafkaListenerContainerFactory() {
+        return factory(JobPostedEvent.class);
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, JobAppliedEvent> jobAppliedKafkaListenerContainerFactory() {
+        return factory(JobAppliedEvent.class);
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, JobApplicationStatusChangedEvent> jobAppStatusKafkaListenerContainerFactory() {
+        return factory(JobApplicationStatusChangedEvent.class);
     }
 }

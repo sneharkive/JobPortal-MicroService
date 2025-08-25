@@ -27,13 +27,13 @@ public class Notification {
   private String email; 
   private String subject; 
   private String message;
-  private String action;
-  private String route;
+  // private String action;
+  // private String route;
   
   private NotificationStatus status;
   private LocalDateTime timestamp;
 
   public NotificationDTO toDTO(){
-    return new NotificationDTO(this.id, this.userId, this.email, this.subject, this.message, this.action, this.route, this.status, this.timestamp);
+    return new NotificationDTO(this.id, this.userId, this.email, this.subject, this.message, this.status, this.timestamp);
   }
 }

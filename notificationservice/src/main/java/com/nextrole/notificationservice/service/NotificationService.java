@@ -37,7 +37,7 @@ public class NotificationService {
   @Autowired
   private NotificationRepository notificationRepo;
 
-  private void saveNotification(Long userId, String email, String subject, String message) {
+  public void saveNotification(Long userId, String email, String subject, String message) {
     Notification noti = new Notification();
     noti.setUserId(userId);
     noti.setEmail(email);

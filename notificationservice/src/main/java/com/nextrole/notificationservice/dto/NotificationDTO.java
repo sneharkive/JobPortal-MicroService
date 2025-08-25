@@ -18,12 +18,12 @@ public class NotificationDTO {
   private String message;
   private String email; 
   private String subject; 
-  private String action;
-  private String route;
+  // private String action;
+  // private String route;
   private NotificationStatus status;
   private LocalDateTime timestamp;
 
   public Notification toEntity(){
-    return new Notification(this.id, this.userId, this.email, this.message, this.subject, this.action, this.route, this.status, this.timestamp);
+    return new Notification(this.id, this.userId, this.email, this.message, this.subject, this.status, this.timestamp);
   }
 }

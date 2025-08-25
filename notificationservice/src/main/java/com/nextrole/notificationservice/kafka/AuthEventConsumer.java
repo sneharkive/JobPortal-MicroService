@@ -1,10 +1,11 @@
-package com.nextrole.notificationservice.service;
+package com.nextrole.notificationservice.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.nextrole.common_dto.kafka.AuthOtpEvent;
+import com.nextrole.notificationservice.service.NotificationService;
 
 import lombok.extern.slf4j.Slf4j;
 

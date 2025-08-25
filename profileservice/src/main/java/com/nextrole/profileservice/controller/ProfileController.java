@@ -34,7 +34,7 @@ public class ProfileController {
   @PostMapping("/create")
 public ResponseEntity<String> createProfile(@RequestBody CreateProfileRequest request) throws JobPortalException {
     String profileId = profileService.createProfile(
-        request.getUserId(), request.getEmail(), request.getName()
+        request.getUserId(), request.getEmail(), request.getName(), request.getAccountType()
     );
     return new ResponseEntity<>(profileId, HttpStatus.CREATED);
 }

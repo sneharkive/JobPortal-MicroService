@@ -11,14 +11,16 @@ import com.nextrole.common_dto.dto.Application;
 import com.nextrole.common_dto.dto.ApplicationStatus;
 import com.nextrole.common_dto.dto.JobStatus;
 import com.nextrole.common_dto.exception.JobPortalException;
+import com.nextrole.common_dto.kafka.JobApplicationStatusChangedEvent;
+import com.nextrole.common_dto.kafka.JobAppliedEvent;
+import com.nextrole.common_dto.kafka.JobPostedEvent;
 import com.nextrole.jobservice.dto.JobDTO;
+import com.nextrole.jobservice.kafka.JobEventProducer;
 import com.nextrole.jobservice.model.Applicant;
 import com.nextrole.jobservice.model.Job;
 import com.nextrole.jobservice.repository.JobRepository;
 import com.nextrole.jobservice.utils.Utilities;
 import com.nextrole.jobservice.dto.ApplicantDTO;
-
-
 
 @Service
 public class JobService {
@@ -26,30 +28,44 @@ public class JobService {
   @Autowired
   private JobRepository jobRepository;
 
-  // @Autowired
-  // private NotificationService notificationService;
+  @Autowired
+  private JobEventProducer jobEventProducer;
 
   public JobDTO postJob(JobDTO jobDTO) throws JobPortalException {
     if (jobDTO.getId() == null) {
-
       jobDTO.setId(Utilities.getNextSequence("jobs"));
       jobDTO.setPostTime(LocalDateTime.now());
-
-      // NotificationDTO notiDTO = new NotificationDTO();
-      // notiDTO.setAction("Job Posted");
-      // notiDTO.setMessage("Job Posted Successfully for " + jobDTO.getJobTitle() + jobDTO.getCompany());
-      // notiDTO.setUserId(jobDTO.getPostedBy());
-      // notiDTO.setRoute("/posted-jobs/" + jobDTO.getId());
-      // notificationService.sendNotification(notiDTO);
     }
 
     else {
-      Job job = jobRepository.findById(jobDTO.getId()).orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
-      if (job.getJobStatus().equals(JobStatus.DRAFT) || jobDTO.getJobStatus().equals(JobStatus.CLOSED))
+      // Job job = jobRepository.findById(jobDTO.getId()).orElseThrow(() -> new
+      // JobPortalException("JOB_NOT_FOUND"));
+      // if (job.getJobStatus().equals(JobStatus.DRAFT) ||
+      // jobDTO.getJobStatus().equals(JobStatus.CLOSED))
+      // jobDTO.setPostTime(LocalDateTime.now());
+
+      jobRepository.findById(jobDTO.getId()).ifPresentOrElse(job -> {
+        if (job.getJobStatus().equals(JobStatus.DRAFT) || jobDTO.getJobStatus().equals(JobStatus.CLOSED)) {
+          jobDTO.setPostTime(LocalDateTime.now());
+        }
+      }, () -> {
+        // if job with given ID doesn’t exist → just treat it as new job
         jobDTO.setPostTime(LocalDateTime.now());
+      });
     }
 
-    return jobRepository.save(jobDTO.toEntity()).toDTO();
+    Job savedJob = jobRepository.save(jobDTO.toEntity());
+
+    jobEventProducer.sendJobPostedEvent(
+        new JobPostedEvent(
+            savedJob.getId().toString(),
+            savedJob.getJobTitle(),
+            savedJob.getCompany(),
+            savedJob.getPostedBy().toString(),
+            savedJob.getJobStatus(),
+            LocalDateTime.now()));
+
+    return savedJob.toDTO();
   }
 
   public List<JobDTO> getAllJobs() throws JobPortalException {
@@ -62,17 +78,24 @@ public class JobService {
 
   public void applyJob(Long id, ApplicantDTO applicantDTO) throws JobPortalException {
     Job job = jobRepository.findById(id).orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
-    List<Applicant> applicants = job.getApplicants();
-    if (applicants == null)
-      applicants = new ArrayList<>();
-    if (applicants.stream().filter((x) -> x.getApplicantId() == applicantDTO.getApplicantId()).toList().size() > 0)
+    // List<Applicant> applicants = job.getApplicants();
+    List<Applicant> applicants = job.getApplicants() == null ? new ArrayList<>() : job.getApplicants();
+
+    if (applicants.stream().anyMatch(x -> x.getApplicantId() == applicantDTO.getApplicantId()))
       throw new JobPortalException("JOB_APPLIED_ALREADY");
 
     applicantDTO.setApplicationStatus(ApplicationStatus.APPLIED);
-
     applicants.add(applicantDTO.toEntity());
     job.setApplicants(applicants);
     jobRepository.save(job);
+
+    jobEventProducer.sendJobAppliedEvent(
+        new JobAppliedEvent(
+            job.getId().toString(),
+            applicantDTO.getApplicantId().toString(),
+            applicantDTO.getName(),
+            applicantDTO.getEmail(),
+            LocalDateTime.now()));
   }
 
   public List<JobDTO> getJobsPostedBy(Long id) throws JobPortalException {
@@ -86,17 +109,6 @@ public class JobService {
         x.setApplicationStatus(application.getApplicationStatus());
         if (application.getApplicationStatus().equals(ApplicationStatus.INTERVIEWING)) {
           x.setInterviewTime(application.getInterviewTime());
-          // NotificationDTO notiDTO = new NotificationDTO();
-          // notiDTO.setAction("Interview Schedule");
-          // notiDTO.setMessage("Interview for job id : " + application.getId());
-          // notiDTO.setUserId(application.getApplicantId());
-          // // notiDTO.setRoute("/jobs/"+application.getId());
-          // notiDTO.setRoute("/job-history");
-          // try {
-          //   notificationService.sendNotification(notiDTO);
-          // } catch (JobPortalException e) {
-          //   e.printStackTrace();
-          // }
         }
       }
       return x;
@@ -104,6 +116,13 @@ public class JobService {
 
     job.setApplicants(applicants);
     jobRepository.save(job);
+
+    jobEventProducer.sendJobAppStatusChangedEvent(
+        new JobApplicationStatusChangedEvent(
+            application.getId().toString(),
+            application.getApplicantId().toString(),
+            application.getApplicationStatus(),
+            LocalDateTime.now()));
 
   }
 

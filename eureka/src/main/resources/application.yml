@@ -1,6 +1,8 @@
 spring: 
   application:
     name: eureka
+  jmx:
+    enabled: false
 
 
 server:

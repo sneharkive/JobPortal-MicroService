@@ -1,4 +1,4 @@
-package com.nextrole.notificationservice.service;
+package com.nextrole.notificationservice.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -8,6 +8,7 @@ import com.nextrole.common_dto.kafka.UserCreatedEvent;
 import com.nextrole.common_dto.kafka.UserDeletedEvent;
 import com.nextrole.common_dto.kafka.UserChangePassEvent;
 import com.nextrole.common_dto.kafka.UserLogInEvent;
+import com.nextrole.notificationservice.service.NotificationService;
 
 import lombok.extern.slf4j.Slf4j;
 

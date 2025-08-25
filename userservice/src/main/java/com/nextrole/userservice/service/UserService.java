@@ -20,6 +20,7 @@ import com.nextrole.common_dto.kafka.UserLogInEvent;
 import com.nextrole.userservice.client.ProfileClient;
 import com.nextrole.userservice.dto.UserDTO;
 import com.nextrole.userservice.entity.User;
+import com.nextrole.userservice.kafka.UserEventProducer;
 import com.nextrole.userservice.repository.UserRepo;
 
 
@@ -50,7 +51,7 @@ public class UserService {
     User user = userDTO.toEntity();
     user = userRepo.save(user);
 
-    if (userDTO.getAccountType() == AccountType.APPLICANT) {
+    // if (userDTO.getAccountType() == AccountType.APPLICANT) {
       UserCreatedEvent event = new UserCreatedEvent();
       event.setUserId(user.getId().toString());
       event.setEmail(user.getEmail());
@@ -59,7 +60,7 @@ public class UserService {
       event.setTimestamp( LocalDateTime.now());
 
       userEventProducer.sendUserCreatedEvent(event);
-    }
+    // }
 
     return user.toDTO();
   }

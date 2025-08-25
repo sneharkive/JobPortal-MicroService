@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.nextrole.authservice.client.UserClient;
 import com.nextrole.authservice.dto.UserDTO;
+import com.nextrole.authservice.kafka.AuthEventProducer;
 import com.nextrole.authservice.model.OTP;
 import com.nextrole.authservice.repository.OTPRepository;
 import com.nextrole.common_dto.exception.JobPortalException;

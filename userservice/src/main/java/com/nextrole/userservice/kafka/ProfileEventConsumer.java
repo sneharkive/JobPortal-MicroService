@@ -1,4 +1,4 @@
-package com.nextrole.userservice.service;
+package com.nextrole.userservice.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;

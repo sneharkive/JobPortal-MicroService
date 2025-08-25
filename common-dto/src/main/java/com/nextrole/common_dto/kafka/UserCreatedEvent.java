@@ -15,7 +15,7 @@ public class UserCreatedEvent {
     private String userId;
     private String email;
     private String name;
-    private AccountType accountType; // APPLICANT / RECRUITER
+    private AccountType accountType; 
     private LocalDateTime timestamp;
 
     // getters and setters
