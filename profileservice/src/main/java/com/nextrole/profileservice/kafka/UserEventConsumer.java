@@ -3,7 +3,6 @@ package com.nextrole.profileservice.kafka;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import com.nextrole.common_dto.dto.AccountType;
 import com.nextrole.common_dto.exception.JobPortalException;
 import com.nextrole.common_dto.kafka.UserCreatedEvent;
 import com.nextrole.profileservice.service.ProfileService;

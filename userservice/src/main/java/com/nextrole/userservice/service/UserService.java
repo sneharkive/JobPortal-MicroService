@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.nextrole.common_dto.dto.AccountType;
 import com.nextrole.common_dto.dto.LoginDTO;
 import com.nextrole.common_dto.dto.ResponseDTO;
 import com.nextrole.common_dto.exception.JobPortalException;

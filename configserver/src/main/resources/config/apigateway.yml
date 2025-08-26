@@ -35,6 +35,13 @@ spring:
               predicates:
                 - Path=/notification/**
 
+
+            - id: messageservice
+              uri: lb://MESSAGESERVICE
+              predicates:
+                - Path=/msg/**
+
+
       globalcors:
         corsConfigurations:
           '[/**]':
