@@ -7,6 +7,8 @@ import ProfileMenu from "./ProfileMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../Service/ProfileService";
 import { setProfile } from "../../Slices/ProfileSlice";
+import { getEmpProfile } from "../../Service/ProfileEmpService";
+import { setEmpProfile } from "../../Slices/ProfileEmpSlice";
 import NotiMenu from "./NotiMenu";
 import { jwtDecode } from "jwt-decode";
 import { setUser } from "../../Slices/UserSlice";
@@ -14,6 +16,8 @@ import { setupResponseInterceptor } from "../../Interceptor/AxiosInterceptor";
 
 const Header = () => {
   const user = useSelector((state: any) => state.user);
+  const profile = useSelector((state: any) => state.profile);
+  const profileEmp = useSelector((state: any) => state.profileEmp);
   const token = useSelector((state: any) => state.jwt);
   const location = useLocation();
   const navigate = useNavigate();
@@ -29,10 +33,12 @@ const Header = () => {
       dispatch(setUser({ ...decoded, email: decoded.sub }));
     }
     console.log(user);
-    getProfile(user?.id.toString())
+    if(user.accountType == "APPLICANT") getProfile(user?.id.toString())
+    else getEmpProfile(user.id.toString())
       .then((data: any) => {
-        dispatch(setProfile(data));
-        // console.log(data);
+        if(user.accountType == "APPLICANT") dispatch(setProfile(data));
+        else dispatch(setEmpProfile(data))
+        console.log(data);
       })
       .catch((err: any) => {
         console.log(err);

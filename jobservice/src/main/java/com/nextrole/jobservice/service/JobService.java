@@ -32,26 +32,26 @@ public class JobService {
   private JobEventProducer jobEventProducer;
 
   public JobDTO postJob(JobDTO jobDTO) throws JobPortalException {
-    if (jobDTO.getId() == null) {
+    if (jobDTO.getId() == null || !jobRepository.existsById(jobDTO.getId())) {
       jobDTO.setId(Utilities.getNextSequence("jobs"));
       jobDTO.setPostTime(LocalDateTime.now());
     }
 
     else {
-      // Job job = jobRepository.findById(jobDTO.getId()).orElseThrow(() -> new
-      // JobPortalException("JOB_NOT_FOUND"));
-      // if (job.getJobStatus().equals(JobStatus.DRAFT) ||
-      // jobDTO.getJobStatus().equals(JobStatus.CLOSED))
-      // jobDTO.setPostTime(LocalDateTime.now());
+      Job job = jobRepository.findById(jobDTO.getId()).orElseThrow(() -> new
+      JobPortalException("JOB_NOT_FOUND"));
+      if (job.getJobStatus().equals(JobStatus.DRAFT) ||
+      jobDTO.getJobStatus().equals(JobStatus.CLOSED))
+      jobDTO.setPostTime(LocalDateTime.now());
 
-      jobRepository.findById(jobDTO.getId()).ifPresentOrElse(job -> {
-        if (job.getJobStatus().equals(JobStatus.DRAFT) || jobDTO.getJobStatus().equals(JobStatus.CLOSED)) {
-          jobDTO.setPostTime(LocalDateTime.now());
-        }
-      }, () -> {
-        // if job with given ID doesn’t exist → just treat it as new job
-        jobDTO.setPostTime(LocalDateTime.now());
-      });
+      // jobRepository.findById(jobDTO.getId()).ifPresentOrElse(job -> {
+      //   if (job.getJobStatus().equals(JobStatus.DRAFT) || jobDTO.getJobStatus().equals(JobStatus.CLOSED)) {
+      //     jobDTO.setPostTime(LocalDateTime.now());
+      //   }
+      // }, () -> {
+      //   // if job with given ID doesn’t exist → just treat it as new job
+      //   jobDTO.setPostTime(LocalDateTime.now());
+      // });
     }
 
     Job savedJob = jobRepository.save(jobDTO.toEntity());

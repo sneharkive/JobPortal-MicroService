@@ -1,28 +1,22 @@
 import { Avatar, Divider, FileInput, Overlay } from "@mantine/core";
 
 import { useDispatch, useSelector } from "react-redux";
-import Info from "./Info";
-import { changeProfile } from "../../Slices/ProfileSlice";
 import About from "./About";
-import Skills from "./Skills";
-import Experience from "./Experience";
-import Certifications from "./Certifications";
+
 import { useHover } from "@mantine/hooks";
 import {
   IconCamera,
   IconEdit,
-  IconFileCvFilled,
-  IconFileDownloadFilled,
-  IconTrash,
 } from "@tabler/icons-react";
 import { SuccessNotification } from "../../Service/NotificationService";
 import { getBase64 } from "../../Service/Utilities";
+import Info from "./Info";
+import { changeEmpProfile } from "../../Slices/ProfileEmpSlice";
 
-const Profile = () => {
+const ProfileEmp = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user);
-  const profile = useSelector((state: any) => state.profile);
-  
+  const profile = useSelector((state: any) => state.profileEmp);
 
   const { hovered, ref } = useHover();
 
@@ -33,7 +27,7 @@ const Profile = () => {
       ...profile,
       profilePicture: profilePicture ? profilePicture.split(",")[1] : null,
     };
-    dispatch(changeProfile(updatedProfile));
+    dispatch(changeEmpProfile(updatedProfile));
     SuccessNotification("Success", `Profile Picture Updated Successfully`);
   };
   const handleCoverPicChange = async (image: any) => {
@@ -43,20 +37,11 @@ const Profile = () => {
       ...profile,
       coverPicture: coverPicture ? coverPicture.split(",")[1] : null,
     };
-    dispatch(changeProfile(updatedProfile));
+    dispatch(changeEmpProfile(updatedProfile));
     SuccessNotification("Success", `Profile Picture Updated Successfully`);
   };
 
-  const handleResumeChange = async (file: any) => {
-    if (!file) return;
-    let resume: any = await getBase64(file);
-    let updatedProfile = {
-      ...profile,
-      resume: resume ? resume.split(",")[1] : null,
-    };
-    dispatch(changeProfile(updatedProfile));
-    SuccessNotification("Success", `Resume Uploaded Successfully`);
-  };
+
 
   return (
     <div className="w-4/5 mx-auto">
@@ -118,49 +103,6 @@ const Profile = () => {
             />
           )}
         </div>
-
-        {/* Resume upload & download section */}
-        <div className="absolute right-1 top-68 z-[300] flex items-center space-x-4">
-          {/* Upload Resume */}
-          <div className="relative w-12 h-12 flex items-center justify-center">
-            <IconFileCvFilled
-              color={profile?.resume ? "#FF9000" : "white"}
-              className="!w-12 !h-12 pointer-events-none"
-            />
-            <FileInput
-              onChange={handleResumeChange}
-              className="absolute inset-0 opacity-0 cursor-pointer"
-              variant="transparent"
-              accept=".pdf"
-            />
-          </div>
-
-          {/* Download Resume (only if exists) */}
-          {profile?.resume && (
-            <a
-              href={`data:application/pdf;base64,${profile.resume}`}
-              download={profile.name + "_Resume.pdf"}
-              // download="resume.pdf"
-              className="w-12 h-12 flex items-center justify-center"
-            >
-              <IconFileDownloadFilled color="#FF9000" className="!w-12 !h-12" />
-            </a>
-          )}
-
-          {/* Delete Resume (only if exists) */}
-          {profile?.resume && (
-            <button
-              onClick={() => {
-                let updatedProfile = { ...profile, resume: null };
-                dispatch(changeProfile(updatedProfile));
-                SuccessNotification("Success", "Resume Removed Successfully");
-              }}
-              className="w-12 h-12 flex items-center justify-center"
-            >
-              <IconTrash color="red" className="!w-10 !h-10" />
-            </button>
-          )}
-        </div>
       </div>
 
       <div className="px-3 mt-24">
@@ -173,17 +115,8 @@ const Profile = () => {
 
       <Divider my="xl" mx="xs" />
 
-      <Skills />
-
-      <Divider my="xl" mx="xs" />
-
-      <Experience />
-
-      <Divider my="xl" mx="xs" />
-
-      <Certifications />
     </div>
   );
 };
 
-export default Profile;
+export default ProfileEmp;

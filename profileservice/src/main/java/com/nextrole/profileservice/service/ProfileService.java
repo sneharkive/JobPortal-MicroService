@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.nextrole.common_dto.dto.AccountType;
 import com.nextrole.common_dto.dto.ProfileCreatedEvent;
 import com.nextrole.common_dto.exception.JobPortalException;
+import com.nextrole.profileservice.dto.EmpProDTO;
 import com.nextrole.profileservice.dto.ProfileDTO;
 import com.nextrole.profileservice.kafka.ProfileEventProducer;
 import com.nextrole.profileservice.model.EmpProfile;
@@ -28,79 +29,77 @@ public class ProfileService {
   @Autowired
   private ProfileEventProducer profileEventProducer;
 
-  // public String createProfile(String userId, String email, String name, AccountType acc) {
-  //   // ✅ If profile already exists, just return its ID
-  //   String profileId = profileRepository.findByUserId(userId)
-  //       .map(Profile::getId)
-  //       .orElseGet(() -> {
-  //         Profile profile = new Profile();
-  //         profile.setUserId(userId);
-  //         profile.setEmail(email);
-  //         profile.setName(name);
-  //         profile.setSkills(new ArrayList<>());
-  //         profile.setExperiences(new ArrayList<>());
-  //         profile.setCertifications(new ArrayList<>());
-  //         profileRepository.save(profile);
-  //         return profile.getId();
-  //       });
+  // public String createProfile(String userId, String email, String name,
+  // AccountType acc) {
+  // // ✅ If profile already exists, just return its ID
+  // String profileId = profileRepository.findByUserId(userId)
+  // .map(Profile::getId)
+  // .orElseGet(() -> {
+  // Profile profile = new Profile();
+  // profile.setUserId(userId);
+  // profile.setEmail(email);
+  // profile.setName(name);
+  // profile.setSkills(new ArrayList<>());
+  // profile.setExperiences(new ArrayList<>());
+  // profile.setCertifications(new ArrayList<>());
+  // profileRepository.save(profile);
+  // return profile.getId();
+  // });
 
-  //   // ✅ Send event back to UserService
-  //   profileEventProducer.sendProfileCreatedEvent(
-  //       new ProfileCreatedEvent(userId, profileId)
-  //   );
+  // // ✅ Send event back to UserService
+  // profileEventProducer.sendProfileCreatedEvent(
+  // new ProfileCreatedEvent(userId, profileId)
+  // );
 
-  //   return profileId;
+  // return profileId;
   // }
-
-
 
   public String createProfile(String userId, String email, String name, AccountType acc) {
     String profileId;
 
     if (acc == AccountType.APPLICANT) {
-        // ✅ Applicant profile
-        profileId = profileRepository.findByUserId(userId)
-            .map(Profile::getId)
-            .orElseGet(() -> {
-                Profile profile = new Profile();
-                profile.setUserId(userId);
-                profile.setEmail(email);
-                profile.setName(name);
-                profile.setSkills(new ArrayList<>());
-                profile.setExperiences(new ArrayList<>());
-                profile.setCertifications(new ArrayList<>());
-                profileRepository.save(profile);
-                return profile.getId();
-            });
+      // ✅ Applicant profile
+      profileId = profileRepository.findByUserId(userId)
+          .map(Profile::getId)
+          .orElseGet(() -> {
+            Profile profile = new Profile();
+            profile.setUserId(userId);
+            profile.setEmail(email);
+            profile.setName(name);
+            profile.setSkills(new ArrayList<>());
+            profile.setExperiences(new ArrayList<>());
+            profile.setCertifications(new ArrayList<>());
+            profileRepository.save(profile);
+            return profile.getId();
+          });
 
     } else if (acc == AccountType.EMPLOYER) {
-        // ✅ Employer profile
-        profileId = empRepo.findByUserId(userId)
-            .map(EmpProfile::getId)
-            .orElseGet(() -> {
-                EmpProfile empProfile = new EmpProfile();
-                empProfile.setUserId(userId);
-                empProfile.setEmail(email);
-                empProfile.setName(name);
-                empRepo.save(empProfile);
-                return empProfile.getId();
-            });
+      // ✅ Employer profile
+      profileId = empRepo.findByUserId(userId)
+          .map(EmpProfile::getId)
+          .orElseGet(() -> {
+            EmpProfile empProfile = new EmpProfile();
+            empProfile.setUserId(userId);
+            empProfile.setEmail(email);
+            empProfile.setName(name);
+            empRepo.save(empProfile);
+            return empProfile.getId();
+          });
 
     } else {
-        throw new IllegalArgumentException("Unsupported account type: " + acc);
+      throw new IllegalArgumentException("Unsupported account type: " + acc);
     }
 
     // ✅ Send event back to UserService
     profileEventProducer.sendProfileCreatedEvent(
-        new ProfileCreatedEvent(userId, profileId)
-    );
+        new ProfileCreatedEvent(userId, profileId));
 
     return profileId;
-}
-
+  }
 
   public ProfileDTO getProfile(String userId) throws JobPortalException {
-    return profileRepository.findByUserId(userId).orElseThrow(() -> new JobPortalException("PROFILE_NOT_FOUND")).toDTO();
+    return profileRepository.findByUserId(userId).orElseThrow(() -> new JobPortalException("PROFILE_NOT_FOUND"))
+        .toDTO();
   }
 
   public ProfileDTO updateProfile(ProfileDTO profileDTO) throws JobPortalException {
@@ -120,12 +119,29 @@ public class ProfileService {
 
   public String deleteProfile(String profileId) throws JobPortalException {
     return profileRepository.findById(profileId).map(user -> {
-        profileRepository.delete(user);
-        return "Profile deleted successfully with id: " + profileId;
+      profileRepository.delete(user);
+      return "Profile deleted successfully with id: " + profileId;
     }).orElseThrow(() -> new JobPortalException("Profile not found with id: " + profileId));
   }
 
+  public EmpProDTO updateEmpProfile(EmpProDTO empDTO) throws JobPortalException {
+    EmpProfile existingProfile = empRepo.findById(empDTO.getId())
+        .orElseThrow(() -> new JobPortalException("PROFILE_NOT_FOUND"));
 
-  
+    EmpProfile updatedProfile = empDTO.toEntity(); // convert DTO → Entity
+    updatedProfile.setId(existingProfile.getId()); // ensure same ID
+
+    EmpProfile saved = empRepo.save(updatedProfile); // save Entity
+    return saved.toDTO(); // return Entity → DTO
+  }
+
+  public EmpProDTO getEmpProfile(String userId) throws JobPortalException {
+    return empRepo.findByUserId(userId).orElseThrow(() -> new JobPortalException("PROFILE_NOT_FOUND"))
+        .toDTO();
+  }
+
+  public List<EmpProDTO> getAllEmpProfile() {
+    return empRepo.findAll().stream().map((x) -> x.toDTO()).toList();
+  }
 
 }

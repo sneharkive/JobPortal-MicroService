@@ -13,7 +13,6 @@ const updateProfile = async (profile:any) => {
   .catch(error => {throw error});
 }
 
-
 const getAllProfile = async () => {
   return axiosInstance.get(`/profiles/getAll`)
   .then (res => res.data)

@@ -20,8 +20,8 @@ public class JobDTO {
   private List<ApplicantDTO> applicants;
   private String about;
   private String experience;
-  private String location;
   private String jobType;
+  private String location;
   private Long packageOffered;
   private LocalDateTime postTime;
   private String description;
@@ -37,8 +37,8 @@ public class JobDTO {
         this.applicants != null ? this.applicants.stream().map(x -> x.toEntity()).toList() : null,
         this.about,
         this.experience,
-        this.location,
         this.jobType,
+        this.location,
         this.packageOffered,
         this.postTime,
         this.description,

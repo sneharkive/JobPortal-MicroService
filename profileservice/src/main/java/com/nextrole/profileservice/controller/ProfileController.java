@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nextrole.common_dto.dto.CreateProfileRequest;
 import com.nextrole.common_dto.exception.JobPortalException;
+import com.nextrole.profileservice.dto.EmpProDTO;
 import com.nextrole.profileservice.dto.ProfileDTO;
 import com.nextrole.profileservice.service.ProfileService;
 
@@ -54,10 +55,25 @@ public ResponseEntity<String> createProfile(@RequestBody CreateProfileRequest re
     return new ResponseEntity<>(profileService.updateProfile(profileDTO), HttpStatus.OK);
   }
 
-
+  
   @DeleteMapping("/delete/{profileId}")
   public ResponseEntity<String> deleteProfile(@PathVariable String profileId) throws JobPortalException {
     return new ResponseEntity<>(profileService.deleteProfile(profileId), HttpStatus.OK);
+  }
+  
+  @PutMapping("/updateEmp")
+  public ResponseEntity<EmpProDTO> updateEmpProfile(@RequestBody EmpProDTO empDTO) throws JobPortalException {
+    return new ResponseEntity<>(profileService.updateEmpProfile(empDTO), HttpStatus.OK);
+  }
+
+    @GetMapping("/getEmp/{userId}")
+  public ResponseEntity<EmpProDTO> getEmpProfile(@PathVariable String userId) throws JobPortalException {
+    return new ResponseEntity<>(profileService.getEmpProfile(userId), HttpStatus.OK);
+  }
+
+  @GetMapping("/getAllEmp")
+  public ResponseEntity<List<EmpProDTO>> getAllEmpProfile() throws JobPortalException {
+    return new ResponseEntity<>(profileService.getAllEmpProfile(), HttpStatus.OK);
   }
 
 }

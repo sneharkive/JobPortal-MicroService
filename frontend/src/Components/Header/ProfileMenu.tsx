@@ -16,6 +16,7 @@ const ProfileMenu = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user);
   const profile = useSelector((state: any) => state.profile);
+  const profileEmp = useSelector((state: any) => state.profileEmp);
   const [checked, setChecked] = useState(false);
   const [opened, setOpened] = useState(false);
 
@@ -32,14 +33,23 @@ const ProfileMenu = () => {
         <div className="flex items-center gap-2 cursor-pointer">
           <div>{user.name}</div>
 
+{user.accountType == "APPLICANT"  ?  <Avatar
+            src={
+              profile?.profilePicture
+                ? `data:image/jpeg;base64, ${profile?.profilePicture}`
+                : "/avatar.png"
+            }
+            alt={user.name}
+          /> :
           <Avatar
             src={
-              profile.profilePicture
-                ? `data:image/jpeg;base64, ${profile.profilePicture}`
+              profileEmp?.profilePicture
+                ? `data:image/jpeg;base64, ${profileEmp?.profilePicture}`
                 : "/avatar.png"
             }
             alt={user.name}
           />
+           }
         </div>
       </Menu.Target>
 
