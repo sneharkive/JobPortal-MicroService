@@ -5,13 +5,13 @@ spring:
   config:
     import: optional:messageservice.secret.yml
 
-  kafka:
-    bootstrap-servers: localhost:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      properties:
-        spring.json.add.type.headers: false   
+  # kafka:
+  #   bootstrap-servers: localhost:9092
+  #   producer:
+  #     key-serializer: org.apache.kafka.common.serialization.StringSerializer
+  #     value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  #     properties:
+  #       spring.json.add.type.headers: false   
 
     
     # consumer:
@@ -21,6 +21,30 @@ spring:
     #   value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
     #   properties:
     #     spring.json.trusted.packages: "com.nextrole.*"
+
+
+
+    kafka:
+      bootstrap-servers: localhost:9092
+      consumer:
+        group-id: message-service-group
+        auto-offset-reset: earliest
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+
+app:
+  kafka:
+    topics:
+      message: messages
+      read: message-reads
+      delivery: message-deliveries
+  websocket:
+    destination-prefix: /app
+    broker-prefix: /topic
 
 
 
