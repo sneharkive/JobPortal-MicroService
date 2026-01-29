@@ -2,6 +2,12 @@
 
 NextRole is a robust, microservices-based Job Portal application designed to connect **Applicants** and **Employers**. It utilizes a modern distributed architecture to handle authentication, job management, real-time notifications, and user profiles seamlessly.
 
+## 🔗 Live Demo
+
+You can explore the live application at the link below:
+
+**[NextRole Job Portal](https://jobportalfrontend-4p43.onrender.com/)**
+
 ---
 
 ## 🏗 System Architecture
@@ -105,4 +111,3 @@ All requests should be directed to the API Gateway at `http://localhost:8080`.
 
 ---
 
-Live At [https://jobportalfrontend-4p43.onrender.com/]
